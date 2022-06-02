@@ -93,7 +93,7 @@ web:
 
     '/':
 
-      root: "\"web\""
+      root: "public"
 
       passthru: "/index.php"
 
