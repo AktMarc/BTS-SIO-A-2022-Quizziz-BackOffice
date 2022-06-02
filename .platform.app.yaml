@@ -18,8 +18,33 @@ name: app
 
 type: 'php:8.0'
 
-     
+dependencies:
 
+    php:
+
+      composer/composer: '^2'
+
+
+
+hooks:
+
+    build: |
+
+      composer install
+
+      composer dump-autoload
+
+    deploy: |
+
+      set -e
+
+
+
+
+
+relationships:
+
+    database: 'db:mysql'
 
 
 # The following block defines a single writable directory, 'web/uploads'
@@ -60,32 +85,6 @@ disk: 256
 
 # side is in the form '<service name>:<endpoint name>'.
 
-relationships:
-
-    database: 'db:mysql'
-
-
-
-dependencies:
-
-    php:
-
-      composer/composer: '^2'
-
-
-
-hooks:
-
-    build: |
-
-      composer install
-
-      composer dump-autoload
-
-    deploy: |
-
-      set -e
-
 
 
 web:
@@ -97,3 +96,21 @@ web:
       root: "\"web\""
 
       passthru: "/index.php"
+
+source:
+
+
+
+  operations:
+
+
+
+    auto-update:
+
+
+
+      command: |
+
+
+
+            curl -fsS https://raw.githubusercontent.com/platformsh/source-operations/main/setup.sh | { bash /dev/fd/3 sop-autoupdate; } 3<&0
